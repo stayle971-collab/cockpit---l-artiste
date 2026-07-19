@@ -1,0 +1,9 @@
+COCKPIT L'ARTISTE
+
+1. Décompressez le dossier.
+2. Pour un simple aperçu, ouvrez index.html.
+3. Pour l'installer comme une vraie application PWA, le dossier doit être publié sur un hébergement HTTPS
+   (Google Sites ne permet pas d'héberger directement cette PWA ; GitHub Pages, Netlify ou un hébergeur web conviennent).
+4. Une fois le lien HTTPS ouvert dans Chrome sur Android : menu ⋮ > Ajouter à l'écran d'accueil.
+
+Le permis d'armement est inclus dans le dossier documents.

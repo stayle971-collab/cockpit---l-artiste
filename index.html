@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b3a53">
+  <meta name="description" content="Cockpit numérique du bateau L'Artiste">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <title>Cockpit L'Artiste</title>
+  <style>
+    :root{
+      --bg:#eef7fb; --card:#ffffff; --navy:#0b3a53; --blue:#147aa3;
+      --accent:#e8b04d; --text:#16262f; --muted:#607480; --danger:#9f2e2e;
+      --shadow:0 8px 28px rgba(10,52,75,.12); --radius:20px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+      background:linear-gradient(180deg,#dff4fb 0,#f8fbfc 42%,#eef7fb 100%);
+      color:var(--text); min-height:100vh;
+    }
+    header{
+      color:#fff; padding:26px 20px 34px;
+      background:
+       radial-gradient(circle at 85% 10%,rgba(255,255,255,.22),transparent 26%),
+       linear-gradient(135deg,#0b3a53,#147aa3);
+      border-radius:0 0 30px 30px; box-shadow:var(--shadow);
+    }
+    .brand{display:flex;gap:14px;align-items:center;max-width:840px;margin:auto}
+    .boat{
+      width:64px;height:64px;border-radius:18px;background:rgba(255,255,255,.15);
+      display:grid;place-items:center;font-size:34px;border:1px solid rgba(255,255,255,.25)
+    }
+    h1{font-size:27px;margin:0 0 3px}
+    .subtitle{margin:0;opacity:.88}
+    main{max-width:840px;margin:-18px auto 30px;padding:0 14px}
+    .status{
+      background:var(--card);border-radius:var(--radius);padding:16px 18px;
+      box-shadow:var(--shadow);display:flex;justify-content:space-between;gap:14px;align-items:center
+    }
+    .status strong{color:var(--navy)}
+    .badge{font-size:13px;background:#dff6e8;color:#176b3d;padding:7px 10px;border-radius:999px;font-weight:700}
+    h2{font-size:18px;color:var(--navy);margin:24px 5px 12px}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .btn{
+      display:flex;flex-direction:column;gap:8px;min-height:112px;padding:16px;
+      text-decoration:none;color:var(--text);background:var(--card);
+      border-radius:18px;box-shadow:var(--shadow);border:1px solid rgba(13,71,98,.06);
+      transition:.15s transform,.15s box-shadow;
+    }
+    .btn:active{transform:scale(.98)}
+    .ico{font-size:29px}
+    .btn b{color:var(--navy)}
+    .btn small{color:var(--muted);line-height:1.25}
+    .check-card,.custom-card{
+      background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)
+    }
+    .check-row{
+      display:flex;align-items:center;gap:12px;padding:11px 4px;border-bottom:1px solid #e7eef1
+    }
+    .check-row:last-child{border-bottom:0}
+    input[type=checkbox]{width:22px;height:22px;accent-color:var(--blue)}
+    .actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+    button{
+      border:0;border-radius:12px;padding:11px 14px;font-weight:700;
+      background:var(--navy);color:#fff;cursor:pointer
+    }
+    button.secondary{background:#e8f0f3;color:var(--navy)}
+    .input-row{display:grid;grid-template-columns:1fr 1fr auto;gap:8px}
+    input[type=text],input[type=url]{
+      width:100%;padding:12px;border-radius:12px;border:1px solid #ccdbe2;font:inherit
+    }
+    #customLinks{margin-top:12px;display:grid;gap:8px}
+    .custom-link{
+      display:flex;justify-content:space-between;align-items:center;gap:10px;
+      padding:11px;border-radius:12px;background:#f2f8fa
+    }
+    .custom-link a{color:var(--navy);font-weight:700;text-decoration:none;overflow-wrap:anywhere}
+    .delete{background:#f7e5e5;color:var(--danger);padding:7px 10px}
+    footer{text-align:center;color:var(--muted);font-size:12px;padding:24px 15px 40px}
+    .notice{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.4}
+
+
+    .captain-shell{display:none}
+    .captain-shell.unlocked{display:block}
+    .captain-lock-card{
+      background:var(--card);border-radius:var(--radius);padding:18px;
+      box-shadow:var(--shadow);text-align:center
+    }
+    .pin-input{
+      width:min(240px,100%);font-size:28px;letter-spacing:12px;text-align:center;
+      padding:12px;border:1px solid #ccdbe2;border-radius:14px;margin:10px auto
+    }
+    .lock-note{font-size:12px;color:var(--muted);line-height:1.4}
+
+
+
+    .settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .settings-grid label{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:5px}
+    .settings-grid .full{grid-column:1/-1}
+    .settings-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    .file-input{padding:10px;background:#f2f8fa;border-radius:12px}
+    @media(max-width:560px){.settings-grid{grid-template-columns:1fr}.settings-grid .full{grid-column:auto}}
+
+    .hero-visual{
+      position:relative;overflow:hidden;border-radius:22px;min-height:210px;
+      box-shadow:0 12px 38px rgba(0,0,0,.25);background:#082c3e
+    }
+    .hero-photo{
+      width:100%;height:240px;object-fit:cover;display:block;filter:saturate(1.05) contrast(1.03)
+    }
+    .hero-overlay{
+      position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:space-between;
+      padding:14px;background:linear-gradient(180deg,transparent 35%,rgba(0,0,0,.58))
+    }
+    .hero-logo{
+      width:92px;height:92px;object-fit:contain;background:rgba(255,255,255,.92);
+      border-radius:18px;padding:6px;box-shadow:0 5px 18px rgba(0,0,0,.25)
+    }
+    .hero-signature{
+      width:min(48%,220px);max-height:92px;object-fit:contain;border-radius:12px;
+      background:rgba(255,255,255,.92);padding:5px
+    }
+
+    .client-card{
+      background:linear-gradient(135deg,#0b3a53,#147aa3);color:#fff;
+      border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)
+    }
+    .client-card h3{margin:0 0 8px;font-size:20px}
+    .client-card p{margin:0 0 16px;opacity:.9}
+    .qr-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .qr-btn{background:#fff;color:var(--navy);min-height:54px}
+    dialog{
+      width:min(92vw,460px);border:0;border-radius:24px;padding:0;
+      box-shadow:0 20px 70px rgba(0,0,0,.35)
+    }
+    dialog::backdrop{background:rgba(0,0,0,.6)}
+    .modal{padding:20px;text-align:center}
+    .modal h3{color:var(--navy);margin:0 0 7px}
+    .modal p{color:var(--muted);margin:0 0 15px}
+    .modal img{width:min(76vw,330px);height:auto;border:10px solid white;border-radius:16px}
+    .close-btn{margin-top:14px;width:100%}
+    .hero-placeholder{
+      margin-top:14px;border-radius:18px;min-height:135px;display:grid;place-items:center;
+      background:linear-gradient(135deg,rgba(255,255,255,.14),rgba(255,255,255,.04));
+      border:1px dashed rgba(255,255,255,.35);text-align:center;padding:16px
+    }
+
+    @media(min-width:650px){.grid{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:480px){.input-row{grid-template-columns:1fr}.status{align-items:flex-start;flex-direction:column}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="boat">🚤</div>
+    <div>
+      <h1>Cockpit L’Artiste</h1>
+      <p class="subtitle">Tableau de bord du capitaine</p>
+    </div>
+  </div>
+  
+  <div class="hero-visual" style="max-width:840px;margin:16px auto 0">
+    <img class="hero-photo" src="assets/bateau_lartiste.png" alt="Le bateau L’Artiste">
+    <div class="hero-overlay">
+      <img class="hero-logo" src="assets/logo_alizes_evasion.png" alt="Logo Alizés Évasion">
+      <img class="hero-signature" src="assets/signature_lartiste.jpg" alt="Signature L’Artiste">
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="status">
+    <div>
+      <strong id="today">Aujourd’hui</strong><br>
+      <span style="color:var(--muted)" id="boatSummary">L’ARTISTE · Sainte-Rose · 11 passagers maximum</span>
+    </div>
+    <span class="badge">PRÊT À NAVIGUER</span>
+  </section>
+
+  <h2>Mode passagers</h2>
+  <section class="client-card">
+    <h3>Présente simplement le QR code</h3>
+    <p>Le passager scanne avec l’appareil photo de son téléphone. Il ouvre directement la bonne page, sans accéder à ton espace capitaine.</p>
+    <div class="qr-actions">
+      <button class="qr-btn" data-qr="assets/qr_registre_passagers.png" data-title="Registre des passagers" data-text="Scannez pour remplir le registre avant l’embarquement.">📋 QR registre</button>
+      <button class="qr-btn" data-qr="assets/qr_avis_google.png" data-title="Avis Google" data-text="Scannez pour laisser un avis après l’excursion.">⭐ QR avis Google</button>
+    </div>
+  </section>
+
+
+  <h2>Espace capitaine</h2>
+  <section class="captain-lock-card" id="captainAccess">
+    <div class="ico">🔐</div>
+    <h3 style="color:var(--navy);margin:6px 0">Accès protégé</h3>
+    <p style="color:var(--muted);margin:0 0 8px">Entre ton code à 4 chiffres pour ouvrir les documents, les réponses et la checklist.</p>
+    <input id="pinCode" class="pin-input" type="password" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off">
+    <div class="actions" style="justify-content:center">
+      <button id="unlockCaptain">Ouvrir l’espace capitaine</button>
+    </div>
+    <p class="lock-note">Ce verrou évite un accès accidentel par un passager. Pour une sécurité forte, il faudra ensuite publier l’application avec une authentification réelle.</p>
+  </section>
+
+  <div class="captain-shell" id="captainShell">
+
+  <h2>Registre et documents</h2>
+  <section class="grid">
+    <a class="btn" href="https://docs.google.com/forms/d/1JaIx-rEFsBfUTf5CrutlzWqNQObcy4C9Z0Di38r3DxE/edit#responses" target="_blank" rel="noopener">
+      <span class="ico">👥</span><b>Réponses du registre</b>
+      <small>Consulter les passagers enregistrés</small>
+    </a>
+
+    <a class="btn" href="documents/permis_armement_lartiste.pdf" target="_blank">
+      <span class="ico">📄</span><b>Permis d’armement</b>
+      <small>Ouvrir le document officiel du navire</small>
+    </a>
+
+    <a class="btn" href="https://docs.google.com/forms/d/1JaIx-rEFsBfUTf5CrutlzWqNQObcy4C9Z0Di38r3DxE/viewform" target="_blank" rel="noopener">
+      <span class="ico">➕</span><b>Remplir le registre</b>
+      <small>Ouvrir le formulaire passagers</small>
+    </a>
+
+    <a class="btn" id="linkWeather" href="https://meteofrance.gp/fr/marine/guadeloupe/cote/guadeloupe-grand-cul-de-sac" target="_blank" rel="noopener">
+      <span class="ico">🌦️</span><b>Météo Grand Cul-de-Sac Marin</b>
+      <small>Vent, rafales, mer, houle et horaires de marée</small>
+    </a>
+  </section>
+
+  <h2>Communication</h2>
+  <section class="grid">
+    <a class="btn" id="linkWhatsapp" href="https://wa.me/590690188810" target="_blank" rel="noopener">
+      <span class="ico">💬</span><b>WhatsApp</b>
+      <small>Contacter rapidement les clients</small>
+    </a>
+
+    <a class="btn" id="linkInstagram" href="https://www.instagram.com/lartiste.boat?igsh=MXJ1a28xcTU3d3Z1dw==" target="_blank" rel="noopener">
+      <span class="ico">📸</span><b>Instagram</b>
+      <small>Ouvrir @lartiste.boat</small>
+    </a>
+
+    <a class="btn" id="linkFacebook" href="https://www.facebook.com/share/1JV7fotTMj/" target="_blank" rel="noopener">
+      <span class="ico">📘</span><b>Facebook</b>
+      <small>Accéder à la page L’Artiste</small>
+    </a>
+
+    <a class="btn" id="linkReview" href="https://g.page/r/CX5EuJUjGmYpEAE/review" target="_blank" rel="noopener">
+      <span class="ico">⭐</span><b>Avis Google</b>
+      <small>Envoyer ce bouton aux clients</small>
+    </a>
+  </section>
+
+  <h2>Checklist avant départ</h2>
+  <section class="check-card" id="checklist">
+    <label class="check-row"><input type="checkbox" data-key="meteo"> Météo et état de la mer vérifiés</label>
+    <label class="check-row"><input type="checkbox" data-key="carburant"> Carburant et huile vérifiés</label>
+    <label class="check-row"><input type="checkbox" data-key="securite"> Gilets et matériel de sécurité à bord</label>
+    <label class="check-row"><input type="checkbox" data-key="enfants"> Brassières enfants adaptées disponibles</label>
+    <label class="check-row"><input type="checkbox" data-key="registre"> Registre des passagers complété</label>
+    <label class="check-row"><input type="checkbox" data-key="briefing"> Briefing de sécurité prévu</label>
+    <label class="check-row"><input type="checkbox" data-key="paiements"> Paiements et réservations vérifiés</label>
+    <div class="actions">
+      <button id="resetChecklist" class="secondary">Réinitialiser la checklist</button>
+    </div>
+  </section>
+
+
+  <h2>Accès de l’équipe</h2>
+  <section class="custom-card">
+    <strong style="color:var(--navy)">Christiane Gacepon</strong>
+    <p style="margin:6px 0 0;color:var(--muted)">Compte Google à autoriser : <span id="colleagueEmailText">Gaceponchristiane@gmail.com</span></p>
+    <p class="notice">Pour qu’elle consulte les réponses, ajoute cette adresse comme collaboratrice du formulaire Google Forms. L’application seule ne peut pas accorder l’autorisation Google.</p>
+  </section>
+
+
+  <h2>Paramètres modifiables</h2>
+  <section class="custom-card">
+    <p style="margin-top:0;color:var(--muted)">Tu peux modifier les informations principales sans toucher au code. Les changements restent enregistrés sur ce téléphone.</p>
+    <div class="settings-grid">
+      <label>Nom du bateau
+        <input id="settingBoatName" type="text" value="L’ARTISTE">
+      </label>
+      <label>Port de départ
+        <input id="settingDeparture" type="text" value="Sainte-Rose">
+      </label>
+      <label>Nombre maximum de passagers
+        <input id="settingMaxPassengers" type="text" inputmode="numeric" value="11">
+      </label>
+      <label>Adresse de Christiane
+        <input id="settingColleagueEmail" type="text" value="Gaceponchristiane@gmail.com">
+      </label>
+      <label class="full">WhatsApp
+        <input id="settingWhatsapp" type="url" value="https://wa.me/590690188810">
+      </label>
+      <label class="full">Instagram
+        <input id="settingInstagram" type="url" value="https://www.instagram.com/lartiste.boat?igsh=MXJ1a28xcTU3d3Z1dw==">
+      </label>
+      <label class="full">Facebook
+        <input id="settingFacebook" type="url" value="https://www.facebook.com/share/1JV7fotTMj/">
+      </label>
+      <label class="full">Lien Avis Google
+        <input id="settingReview" type="url" value="https://g.page/r/CX5EuJUjGmYpEAE/review">
+      </label>
+      <label class="full">Lien météo
+        <input id="settingWeather" type="url" value="https://meteofrance.gp/fr/marine/guadeloupe/cote/guadeloupe-grand-cul-de-sac">
+      </label>
+    </div>
+    <div class="settings-actions">
+      <button id="saveSettings">Enregistrer les modifications</button>
+      <button class="secondary" id="exportSettings">Exporter une sauvegarde</button>
+      <label class="file-input">Importer une sauvegarde
+        <input id="importSettings" type="file" accept="application/json" style="display:block;margin-top:8px">
+      </label>
+      <button class="secondary" id="resetSettings">Réinitialiser</button>
+    </div>
+    <p class="notice">Le bouton « Exporter » télécharge un petit fichier de sauvegarde. Tu pourras le réimporter sur un autre téléphone.</p>
+  </section>
+
+  <h2>Mes raccourcis</h2>
+  <section class="custom-card">
+    <div class="input-row">
+      <input id="linkName" type="text" placeholder="Nom : Assurance">
+      <input id="linkUrl" type="url" placeholder="Lien https://...">
+      <button id="addLink">Ajouter</button>
+    </div>
+    <div id="customLinks"></div>
+    <p class="notice">Les raccourcis ajoutés restent enregistrés uniquement sur ce téléphone. Évite d’ajouter des documents sensibles sur un téléphone non verrouillé.</p>
+  </section>
+    <div class="actions" style="justify-content:center;margin-top:20px">
+      <button class="secondary" id="lockCaptain">Verrouiller l’espace capitaine</button>
+    </div>
+  </div>
+</main>
+
+
+<dialog id="qrDialog">
+  <div class="modal">
+    <h3 id="qrTitle">QR code</h3>
+    <p id="qrText"></p>
+    <img id="qrImage" alt="QR code à scanner">
+    <button class="close-btn" id="closeQr">Fermer</button>
+  </div>
+</dialog>
+
+<footer>
+  Cockpit numérique privé de L’Artiste<br>
+  Pour installer : ouvrir dans Chrome puis « Ajouter à l’écran d’accueil ».
+</footer>
+
+<script>
+  const fmt = new Intl.DateTimeFormat('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('today').textContent = fmt.format(new Date()).replace(/^./, c=>c.toUpperCase());
+
+  document.querySelectorAll('#checklist input[type=checkbox]').forEach(cb=>{
+    cb.checked = localStorage.getItem('check_'+cb.dataset.key)==='1';
+    cb.addEventListener('change',()=>localStorage.setItem('check_'+cb.dataset.key,cb.checked?'1':'0'));
+  });
+  document.getElementById('resetChecklist').addEventListener('click',()=>{
+    document.querySelectorAll('#checklist input[type=checkbox]').forEach(cb=>{
+      cb.checked=false; localStorage.removeItem('check_'+cb.dataset.key);
+    });
+  });
+
+  const listEl = document.getElementById('customLinks');
+  const getLinks = () => JSON.parse(localStorage.getItem('customLinks') || '[]');
+  const saveLinks = links => localStorage.setItem('customLinks', JSON.stringify(links));
+  function renderLinks(){
+    const links=getLinks(); listEl.innerHTML='';
+    links.forEach((item,i)=>{
+      const row=document.createElement('div'); row.className='custom-link';
+      const a=document.createElement('a'); a.href=item.url; a.target='_blank'; a.rel='noopener'; a.textContent='🔗 '+item.name;
+      const del=document.createElement('button'); del.className='delete'; del.textContent='Supprimer';
+      del.onclick=()=>{links.splice(i,1);saveLinks(links);renderLinks()};
+      row.append(a,del); listEl.append(row);
+    });
+  }
+  document.getElementById('addLink').addEventListener('click',()=>{
+    const name=document.getElementById('linkName').value.trim();
+    let url=document.getElementById('linkUrl').value.trim();
+    if(!name || !url){alert('Indique un nom et un lien.');return}
+    if(!/^https?:\/\//i.test(url)) url='https://'+url;
+    try{ new URL(url); }catch(e){ alert('Le lien semble incorrect.'); return; }
+    const links=getLinks(); links.push({name,url}); saveLinks(links);
+    document.getElementById('linkName').value=''; document.getElementById('linkUrl').value='';
+    renderLinks();
+  });
+  renderLinks();
+
+  const qrDialog = document.getElementById('qrDialog');
+  document.querySelectorAll('[data-qr]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.getElementById('qrTitle').textContent = btn.dataset.title;
+      document.getElementById('qrText').textContent = btn.dataset.text;
+      document.getElementById('qrImage').src = btn.dataset.qr;
+      qrDialog.showModal();
+    });
+  });
+  document.getElementById('closeQr').addEventListener('click',()=>qrDialog.close());
+  qrDialog.addEventListener('click',e=>{ if(e.target===qrDialog) qrDialog.close(); });
+
+
+
+  const defaultSettings = {
+    boatName: "L’ARTISTE",
+    departure: "Sainte-Rose",
+    maxPassengers: "11",
+    colleagueEmail: "Gaceponchristiane@gmail.com",
+    whatsapp: "https://wa.me/590690188810",
+    instagram: "https://www.instagram.com/lartiste.boat?igsh=MXJ1a28xcTU3d3Z1dw==",
+    facebook: "https://www.facebook.com/share/1JV7fotTMj/",
+    review: "https://g.page/r/CX5EuJUjGmYpEAE/review",
+    weather: "https://meteofrance.gp/fr/marine/guadeloupe/cote/guadeloupe-grand-cul-de-sac"
+  };
+
+  function getSettings(){
+    try{
+      return {...defaultSettings, ...JSON.parse(localStorage.getItem('appSettings') || '{}')};
+    }catch(e){ return {...defaultSettings}; }
+  }
+
+  function applySettings(settings){
+    document.getElementById('boatSummary').textContent =
+      `${settings.boatName} · ${settings.departure} · ${settings.maxPassengers} passagers maximum`;
+    document.getElementById('colleagueEmailText').textContent = settings.colleagueEmail;
+    document.getElementById('linkWhatsapp').href = settings.whatsapp;
+    document.getElementById('linkInstagram').href = settings.instagram;
+    document.getElementById('linkFacebook').href = settings.facebook;
+    document.getElementById('linkReview').href = settings.review;
+    document.getElementById('linkWeather').href = settings.weather;
+
+    document.getElementById('settingBoatName').value = settings.boatName;
+    document.getElementById('settingDeparture').value = settings.departure;
+    document.getElementById('settingMaxPassengers').value = settings.maxPassengers;
+    document.getElementById('settingColleagueEmail').value = settings.colleagueEmail;
+    document.getElementById('settingWhatsapp').value = settings.whatsapp;
+    document.getElementById('settingInstagram').value = settings.instagram;
+    document.getElementById('settingFacebook').value = settings.facebook;
+    document.getElementById('settingReview').value = settings.review;
+    document.getElementById('settingWeather').value = settings.weather;
+  }
+
+  function readSettingsForm(){
+    return {
+      boatName: document.getElementById('settingBoatName').value.trim(),
+      departure: document.getElementById('settingDeparture').value.trim(),
+      maxPassengers: document.getElementById('settingMaxPassengers').value.trim(),
+      colleagueEmail: document.getElementById('settingColleagueEmail').value.trim(),
+      whatsapp: document.getElementById('settingWhatsapp').value.trim(),
+      instagram: document.getElementById('settingInstagram').value.trim(),
+      facebook: document.getElementById('settingFacebook').value.trim(),
+      review: document.getElementById('settingReview').value.trim(),
+      weather: document.getElementById('settingWeather').value.trim()
+    };
+  }
+
+  document.getElementById('saveSettings').addEventListener('click',()=>{
+    const settings = readSettingsForm();
+    localStorage.setItem('appSettings', JSON.stringify(settings));
+    applySettings(settings);
+    alert('Modifications enregistrées sur ce téléphone.');
+  });
+
+  document.getElementById('exportSettings').addEventListener('click',()=>{
+    const data = JSON.stringify(getSettings(), null, 2);
+    const blob = new Blob([data], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'sauvegarde-cockpit-lartiste.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  document.getElementById('importSettings').addEventListener('change', async (event)=>{
+    const file = event.target.files[0];
+    if(!file) return;
+    try{
+      const imported = JSON.parse(await file.text());
+      const settings = {...defaultSettings, ...imported};
+      localStorage.setItem('appSettings', JSON.stringify(settings));
+      applySettings(settings);
+      alert('Sauvegarde importée.');
+    }catch(e){
+      alert('Ce fichier de sauvegarde est invalide.');
+    }
+    event.target.value = '';
+  });
+
+  document.getElementById('resetSettings').addEventListener('click',()=>{
+    if(confirm('Réinitialiser toutes les informations modifiables ?')){
+      localStorage.removeItem('appSettings');
+      applySettings(defaultSettings);
+    }
+  });
+
+  applySettings(getSettings());
+
+
+    const CAPTAIN_PIN = '2026';
+  const captainShell = document.getElementById('captainShell');
+  const captainAccess = document.getElementById('captainAccess');
+  const pinCode = document.getElementById('pinCode');
+
+  function setCaptainUnlocked(unlocked){
+    captainShell.classList.toggle('unlocked', unlocked);
+    captainAccess.style.display = unlocked ? 'none' : 'block';
+    sessionStorage.setItem('captainUnlocked', unlocked ? '1' : '0');
+    if(unlocked) window.scrollTo({top: captainShell.offsetTop - 20, behavior:'smooth'});
+  }
+
+  document.getElementById('unlockCaptain').addEventListener('click',()=>{
+    if(pinCode.value === CAPTAIN_PIN){
+      pinCode.value = '';
+      setCaptainUnlocked(true);
+    } else {
+      alert('Code incorrect.');
+      pinCode.select();
+    }
+  });
+
+  pinCode.addEventListener('keydown',e=>{
+    if(e.key === 'Enter') document.getElementById('unlockCaptain').click();
+  });
+
+  document.getElementById('lockCaptain').addEventListener('click',()=>{
+    setCaptainUnlocked(false);
+    window.scrollTo({top: captainAccess.offsetTop - 20, behavior:'smooth'});
+  });
+
+  if(sessionStorage.getItem('captainUnlocked') === '1') setCaptainUnlocked(true);
+
+
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js');
+</script>
+</body>
+</html>

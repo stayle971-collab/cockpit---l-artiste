@@ -1,0 +1,17 @@
+{
+  "name": "Cockpit L'Artiste",
+  "short_name": "L'Artiste",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#eef7fb",
+  "theme_color": "#0b3a53",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
