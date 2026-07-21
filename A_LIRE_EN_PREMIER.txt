@@ -1,0 +1,18 @@
+COCKPIT L'ARTISTE — VERSION CORRIGÉE
+
+1. Ne lance pas l'application définitivement en double-cliquant sur index.html.
+   Cette ouverture locale sert seulement à voir l'apparence.
+
+2. Mets TOUT le contenu de ce dossier dans ton dépôt GitHub Pages :
+   - index.html à la racine
+   - assets à la racine
+   - documents à la racine
+   - manifest.webmanifest, icon.svg et service-worker.js à la racine
+
+3. Attends 1 à 3 minutes, puis ouvre le lien HTTPS de l'application.
+
+4. La page affiche maintenant le véritable code d'erreur Firebase en cas d'échec
+   au lieu du message général.
+
+La configuration Firebase présente dans index.html correspond au projet :
+cockpit-l-artiste

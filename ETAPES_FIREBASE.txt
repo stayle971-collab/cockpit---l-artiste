@@ -1,0 +1,20 @@
+COCKPIT L'ARTISTE V2 — DERNIÈRES ÉTAPES
+
+1) FIRESTORE > RÈGLES
+Copier le contenu du fichier firestore.rules, le coller dans l'onglet Règles, puis cliquer sur Publier.
+
+2) AUTHENTICATION > UTILISATEURS
+Créer deux comptes avec « Ajouter un utilisateur » :
+- le compte administrateur de Samuel ;
+- le compte du second capitaine.
+Choisir deux mots de passe différents et solides.
+
+3) GITHUB
+Remplacer les anciens fichiers du dépôt par ceux de ce dossier, puis attendre 1 à 3 minutes.
+Sur le téléphone, actualiser l'application ou la fermer puis la rouvrir.
+
+Le stockage des images utilise Cloudinary :
+- nom du nuage : pdj1sft5
+- préréglage non signé : photos d'artistes de cockpit
+
+Ne jamais ajouter de secret API Cloudinary dans index.html.
