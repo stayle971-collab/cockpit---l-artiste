@@ -1,7 +1,0 @@
-VERSION 2.4 — ANNULATION ET SUPPRESSION
-
-- Bouton « Annuler cette sortie » pendant une excursion déclenchée par le QR registre.
-- Une sortie annulée ne crée aucun paiement et aucun reste à payer.
-- Bouton « Supprimer » sur chaque ligne du carnet de bord.
-- Après suppression, les totaux Paiements reçus, Reste à payer et Montant total sont recalculés.
-- Publier le fichier firestore.rules fourni pour autoriser la suppression des entrées du carnet.

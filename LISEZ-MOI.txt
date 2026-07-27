@@ -7,10 +7,3 @@ COCKPIT L'ARTISTE
 4. Une fois le lien HTTPS ouvert dans Chrome sur Android : menu ⋮ > Ajouter à l'écran d'accueil.
 
 Le permis d'armement est inclus dans le dossier documents.
-
-
-NOUVEAU — CARNET DE BORD NUMÉRIQUE
-- Paiements, dépenses, entretien, opérations et notes.
-- Historique synchronisé avec Firebase.
-- Les premières données prévues sont : 100 € le 21/07/2026, 200 € le 23/07/2026 et 270 € restant à payer.
-- IMPORTANT : republiez le fichier firestore.rules dans Firebase pour autoriser la collection carnet_bord.
