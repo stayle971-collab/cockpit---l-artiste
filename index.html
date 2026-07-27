@@ -131,6 +131,12 @@
     .client-card p{margin:0 0 16px;opacity:.9}
     .qr-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     .qr-btn{background:#fff;color:var(--navy);min-height:54px}
+    .trip-status{margin-top:14px;padding:13px;border-radius:14px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.25);display:none}
+    .trip-status.visible{display:block}
+    .trip-status strong{display:block;margin-bottom:4px}
+    .trip-status small{display:block;opacity:.9;margin-bottom:10px}
+    .trip-status button{background:#fff;color:var(--navy);width:100%;margin-top:8px}
+    .trip-status .cancel-trip{background:#ffe9e9;color:#a51f1f}
     dialog{
       width:min(92vw,460px);border:0;border-radius:24px;padding:0;
       box-shadow:0 20px 70px rgba(0,0,0,.35)
@@ -171,6 +177,50 @@
     .progress span{display:block;height:100%;width:0;background:var(--blue);transition:width .2s}
     @media(max-width:560px){.gallery{grid-template-columns:1fr}.media-item img{height:220px}}
 
+
+
+    .logbook-card{background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+    .logbook-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:16px}
+    .money-box{background:#f2f8fa;border:1px solid #dce9ee;border-radius:15px;padding:13px;text-align:center}
+    .money-box span{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
+    .money-box strong{font-size:20px;color:var(--navy)}
+    .money-box.remaining strong{color:var(--danger)}
+    .logbook-form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .logbook-form label{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:5px}
+    .logbook-form .full{grid-column:1/-1}
+    .logbook-form input,.logbook-form select,.logbook-form textarea{width:100%;padding:12px;border-radius:12px;border:1px solid #ccdbe2;font:inherit}
+    .logbook-form textarea{min-height:75px;resize:vertical}
+    .logbook-history{display:grid;gap:9px;margin-top:15px}
+    .logbook-entry{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;background:#f2f8fa;border-radius:14px;padding:12px;border:1px solid #dce9ee}
+    .logbook-entry b{color:var(--navy)}
+    .logbook-entry .amount{font-weight:800;white-space:nowrap;color:#176b3d}
+    .logbook-entry.remaining .amount{color:var(--danger)}
+    @media(max-width:560px){.logbook-summary{grid-template-columns:1fr}.logbook-form{grid-template-columns:1fr}.logbook-form .full{grid-column:auto}}
+
+
+    .calendar-card{background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+    .calendar-toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+    .calendar-toolbar strong{color:var(--navy);text-transform:capitalize}
+    .calendar-toolbar button{padding:9px 12px}
+    .calendar-weekdays,.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+    .calendar-weekdays div{text-align:center;font-size:11px;color:var(--muted);font-weight:700;padding:4px 0}
+    .calendar-day{min-height:72px;border:1px solid #dce9ee;background:#f8fbfc;border-radius:12px;padding:7px;cursor:pointer;text-align:left;color:var(--text);font-weight:600;position:relative}
+    .calendar-day.outside{opacity:.35;cursor:default}
+    .calendar-day.today{outline:2px solid var(--blue)}
+    .calendar-day .day-number{display:block;margin-bottom:5px}
+    .calendar-day .day-state{display:block;font-size:10px;line-height:1.15;font-weight:700}
+    .calendar-day.available{background:#e4f6eb;border-color:#b9dfc8;color:#176b3d}
+    .calendar-day.unavailable{background:#f9e4e4;border-color:#e8bcbc;color:#8f2525}
+    .calendar-day.morning,.calendar-day.afternoon{background:#fff4dc;border-color:#ead39a;color:#77520d}
+    .availability-form{margin-top:15px;padding-top:15px;border-top:1px solid #e4edf1;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .availability-form label{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:5px}
+    .availability-form input,.availability-form select,.availability-form textarea{width:100%;padding:12px;border-radius:12px;border:1px solid #ccdbe2;font:inherit}
+    .availability-form textarea{min-height:70px;resize:vertical}
+    .availability-form .full{grid-column:1/-1}
+    .calendar-legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--muted)}
+    .calendar-legend span{padding:5px 8px;border-radius:999px;background:#f2f8fa}
+    @media(max-width:560px){.calendar-day{min-height:58px;padding:5px}.calendar-day .day-state{font-size:0}.calendar-day.available .day-state:after{content:'✓';font-size:13px}.calendar-day.unavailable .day-state:after{content:'×';font-size:13px}.calendar-day.morning .day-state:after{content:'AM';font-size:10px}.calendar-day.afternoon .day-state:after{content:'PM';font-size:10px}.availability-form{grid-template-columns:1fr}.availability-form .full{grid-column:auto}}
+
     @media(min-width:650px){.grid{grid-template-columns:repeat(3,1fr)}}
     @media(max-width:480px){.input-row{grid-template-columns:1fr}.status{align-items:flex-start;flex-direction:column}}
   </style>
@@ -208,8 +258,14 @@
     <h3>Présente simplement le QR code</h3>
     <p>Le passager scanne avec l’appareil photo de son téléphone. Il ouvre directement la bonne page, sans accéder à ton espace capitaine.</p>
     <div class="qr-actions">
-      <button class="qr-btn" data-qr="assets/qr_registre_passagers.png" data-title="Registre des passagers" data-text="Scannez pour remplir le registre avant l’embarquement.">📋 QR registre</button>
+      <button class="qr-btn" id="registryQrButton" data-qr="assets/qr_registre_passagers.png" data-title="Registre des passagers" data-text="Scannez pour remplir le registre avant l’embarquement.">📋 QR registre</button>
       <button class="qr-btn" data-qr="assets/qr_avis_google.png" data-title="Avis Google" data-text="Scannez pour laisser un avis après l’excursion.">⭐ QR avis Google</button>
+    </div>
+    <div class="trip-status" id="tripStatus">
+      <strong id="tripStatusTitle">Excursion en cours</strong>
+      <small id="tripStatusText"></small>
+      <button id="finishTripNow" type="button">Terminer l’excursion maintenant</button>
+      <button id="cancelActiveTrip" class="cancel-trip" type="button">Annuler cette sortie</button>
     </div>
   </section>
 
@@ -234,6 +290,82 @@
   </section>
 
   <div class="captain-shell" id="captainShell">
+
+
+
+  <h2>Calendrier des disponibilités</h2>
+  <section class="calendar-card">
+    <div class="calendar-toolbar">
+      <button id="previousMonth" class="secondary" type="button" aria-label="Mois précédent">←</button>
+      <strong id="calendarMonthTitle">Mois</strong>
+      <button id="nextMonth" class="secondary" type="button" aria-label="Mois suivant">→</button>
+    </div>
+    <div class="calendar-weekdays"><div>Lun</div><div>Mar</div><div>Mer</div><div>Jeu</div><div>Ven</div><div>Sam</div><div>Dim</div></div>
+    <div class="calendar-grid" id="availabilityCalendar"></div>
+    <div class="calendar-legend">
+      <span>✅ Disponible</span><span>⛔ Journée indisponible</span><span>🌅 Matin indisponible</span><span>🌇 Après-midi indisponible</span>
+    </div>
+    <div class="availability-form">
+      <label>Date sélectionnée
+        <input id="availabilityDate" type="date">
+      </label>
+      <label>Disponibilité
+        <select id="availabilityStatus">
+          <option value="available">Disponible toute la journée</option>
+          <option value="unavailable">Indisponible toute la journée</option>
+          <option value="morning">Indisponible le matin</option>
+          <option value="afternoon">Indisponible l’après-midi</option>
+        </select>
+      </label>
+      <label class="full">Note facultative
+        <textarea id="availabilityNote" placeholder="Exemple : rendez-vous, entretien du bateau, sortie déjà réservée…"></textarea>
+      </label>
+      <div class="full actions">
+        <button id="saveAvailability" type="button">Enregistrer ce jour</button>
+        <button id="deleteAvailability" class="secondary" type="button">Effacer le statut</button>
+      </div>
+    </div>
+    <div class="sync-status" id="availabilityStatusText"></div>
+  </section>
+
+  <h2>Carnet de bord numérique</h2>
+  <section class="logbook-card">
+    <div class="logbook-summary">
+      <div class="money-box"><span>Paiements reçus</span><strong id="paymentsTotal">0,00 €</strong></div>
+      <div class="money-box remaining"><span>Reste à payer</span><strong id="remainingTotal">0,00 €</strong></div>
+      <div class="money-box"><span>Montant total</span><strong id="grandTotal">0,00 €</strong></div>
+    </div>
+    <div class="logbook-form">
+      <label>Date
+        <input id="logDate" type="date">
+      </label>
+      <label>Type
+        <select id="logType">
+          <option value="payment">Paiement reçu</option>
+          <option value="remaining">Reste à payer</option>
+          <option value="expense">Dépense</option>
+          <option value="maintenance">Entretien / réparation</option>
+          <option value="operation">Opération du bateau</option>
+          <option value="note">Note</option>
+        </select>
+      </label>
+      <label>Montant en euros
+        <input id="logAmount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Exemple : 100">
+      </label>
+      <label>Intitulé
+        <input id="logTitle" type="text" placeholder="Exemple : Acompte excursion">
+      </label>
+      <label class="full">Détails
+        <textarea id="logDetails" placeholder="Informations complémentaires facultatives"></textarea>
+      </label>
+      <div class="full actions">
+        <button id="addLogEntry" type="button">Ajouter au carnet</button>
+        <button id="refreshLogbook" class="secondary" type="button">Actualiser</button>
+      </div>
+    </div>
+    <div class="sync-status" id="logbookStatus"></div>
+    <div class="logbook-history" id="logbookHistory"><div class="empty-state">Connexion en cours…</div></div>
+  </section>
 
   <h2>Photos du bord et incidents</h2>
   <section class="upload-card">
@@ -299,14 +431,29 @@
       <small>Ouvrir @lartiste.boat</small>
     </a>
 
-    <a class="btn" id="linkFacebook" href="https://www.facebook.com/share/1JV7fotTMj/" target="_blank" rel="noopener">
+    <a class="btn" id="linkFacebook" href="https://www.facebook.com/share/18yojth8gK/" target="_blank" rel="noopener">
       <span class="ico">📘</span><b>Facebook</b>
       <small>Accéder à la page L’Artiste</small>
     </a>
 
+    <a class="btn" id="linkTripadvisor" href="https://www.tripadvisor.com/UserReviewEdit-d34519311?m=68676" target="_blank" rel="noopener">
+      <span class="ico">🦉</span><b>Avis TripAdvisor</b>
+      <small>Laisser directement un avis sur L’Artiste</small>
+    </a>
+
+    <button class="btn" id="showTripadvisorQr" type="button" data-qr="assets/qr_avis_tripadvisor.png" data-title="Avis TripAdvisor" data-text="Scannez ce QR code pour laisser votre avis sur L’Artiste.">
+      <span class="ico">📱</span><b>QR code TripAdvisor</b>
+      <small>Afficher le QR code en grand pour le client</small>
+    </button>
+
+    <button class="btn" id="shareBusiness" type="button">
+      <span class="ico">📲</span><b>Partager L’Artiste</b>
+      <small>Partager Instagram, Facebook ou le site depuis le téléphone</small>
+    </button>
+
     <a class="btn" id="linkReview" href="https://g.page/r/CX5EuJUjGmYpEAE/review" target="_blank" rel="noopener">
       <span class="ico">⭐</span><b>Avis Google</b>
-      <small>Envoyer ce bouton aux clients</small>
+      <small>Laisser aussi un avis sur Google</small>
     </a>
   </section>
 
@@ -356,7 +503,10 @@
         <input id="settingInstagram" type="url" value="https://www.instagram.com/lartiste.boat?igsh=MXJ1a28xcTU3d3Z1dw==">
       </label>
       <label class="full">Facebook
-        <input id="settingFacebook" type="url" value="https://www.facebook.com/share/1JV7fotTMj/">
+        <input id="settingFacebook" type="url" value="https://www.facebook.com/share/18yojth8gK/">
+      </label>
+      <label class="full">Lien Avis TripAdvisor
+        <input id="settingTripadvisor" type="url" value="https://www.tripadvisor.com/UserReviewEdit-d34519311?m=68676">
       </label>
       <label class="full">Lien Avis Google
         <input id="settingReview" type="url" value="https://g.page/r/CX5EuJUjGmYpEAE/review">
@@ -399,6 +549,20 @@
   </div>
 </dialog>
 
+<dialog id="paymentDialog">
+  <div class="modal">
+    <div style="font-size:42px;margin-bottom:6px">💶</div>
+    <h3>Fin de l’excursion</h3>
+    <p id="paymentQuestion">As-tu été payé 100 € pour cette excursion ?</p>
+    <div class="actions" style="justify-content:center">
+      <button id="tripPaidYes" type="button">Oui, payé 100 €</button>
+      <button id="tripPaidNo" class="secondary" type="button">Non, reste à payer</button>
+    </div>
+    <div class="sync-status" id="tripPaymentStatus"></div>
+    <button class="close-btn secondary" id="closePaymentLater" type="button">Répondre plus tard</button>
+  </div>
+</dialog>
+
 <footer>
   Cockpit numérique privé de L’Artiste<br>
   Pour installer : ouvrir dans Chrome puis « Ajouter à l’écran d’accueil ».
@@ -407,7 +571,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
   import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-  import { getFirestore, collection, addDoc, query, orderBy, limit, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, query, orderBy, limit, getDocs, serverTimestamp, deleteDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDYYeR43MDEx8k_nn3mN0fKRPMesmxNPyQ",
@@ -419,10 +583,6 @@
   };
   const CLOUDINARY_CLOUD_NAME = "pdj1sft5";
   const CLOUDINARY_UPLOAD_PRESET = "photos d'artistes de cockpit";
-  if (location.protocol === 'file:') {
-    console.warn("Application ouverte en fichier local. Pour un fonctionnement fiable de Firebase et de la PWA, publie-la sur GitHub Pages en HTTPS.");
-  }
-
   const firebaseApp = initializeApp(firebaseConfig);
   const auth = getAuth(firebaseApp);
   const db = getFirestore(firebaseApp);
@@ -476,6 +636,117 @@
   document.getElementById('closeQr').addEventListener('click',()=>qrDialog.close());
   qrDialog.addEventListener('click',e=>{ if(e.target===qrDialog) qrDialog.close(); });
 
+  const TRIP_DURATION_MS = 4 * 60 * 60 * 1000;
+  const ACTIVE_TRIP_KEY = 'lartisteActiveTripV1';
+  const paymentDialog = document.getElementById('paymentDialog');
+  const tripStatus = document.getElementById('tripStatus');
+  const tripStatusText = document.getElementById('tripStatusText');
+  const tripPaymentStatus = document.getElementById('tripPaymentStatus');
+
+  function getActiveTrip(){
+    try{ return JSON.parse(localStorage.getItem(ACTIVE_TRIP_KEY) || 'null'); }catch(e){ return null; }
+  }
+  function saveActiveTrip(trip){ localStorage.setItem(ACTIVE_TRIP_KEY, JSON.stringify(trip)); }
+  function localDateIso(date=new Date()){
+    const y=date.getFullYear(), m=String(date.getMonth()+1).padStart(2,'0'), d=String(date.getDate()).padStart(2,'0');
+    return `${y}-${m}-${d}`;
+  }
+  function formatTime(timestamp){ return new Date(timestamp).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}); }
+
+  function renderActiveTrip(){
+    const trip=getActiveTrip();
+    if(!trip || trip.processed){ tripStatus.classList.remove('visible'); return; }
+    tripStatus.classList.add('visible');
+    const due = Date.now() >= trip.expectedEndAt;
+    tripStatusText.textContent = due
+      ? `Sortie commencée à ${formatTime(trip.startedAt)} · paiement à confirmer maintenant.`
+      : `Sortie commencée à ${formatTime(trip.startedAt)} · question de paiement prévue vers ${formatTime(trip.expectedEndAt)}.`;
+  }
+
+  function startTripFromRegistry(){
+    const existing=getActiveTrip();
+    if(existing && !existing.processed){
+      renderActiveTrip();
+      return;
+    }
+    const now=Date.now();
+    saveActiveTrip({id:`trip-${now}`,startedAt:now,expectedEndAt:now+TRIP_DURATION_MS,processed:false});
+    renderActiveTrip();
+  }
+
+  function askTripPayment(force=false){
+    const trip=getActiveTrip();
+    if(!trip || trip.processed) return;
+    if(!force && Date.now() < trip.expectedEndAt) return;
+    document.getElementById('paymentQuestion').textContent = `As-tu été payé 100 € pour l’excursion commencée à ${formatTime(trip.startedAt)} ?`;
+    tripPaymentStatus.textContent='';
+    if(!paymentDialog.open) paymentDialog.showModal();
+  }
+
+  document.getElementById('registryQrButton').addEventListener('click', startTripFromRegistry);
+  document.getElementById('finishTripNow').addEventListener('click',()=>askTripPayment(true));
+  document.getElementById('cancelActiveTrip').addEventListener('click',()=>{
+    const trip=getActiveTrip();
+    if(!trip) return;
+    if(!confirm('Annuler cette sortie ? Aucun paiement ne sera ajouté au carnet.')) return;
+    localStorage.removeItem(ACTIVE_TRIP_KEY);
+    if(paymentDialog.open) paymentDialog.close();
+    renderActiveTrip();
+    alert('Sortie annulée. Aucun montant n’a été enregistré.');
+  });
+  document.getElementById('closePaymentLater').addEventListener('click',()=>paymentDialog.close());
+
+  async function recordTripPayment(wasPaid){
+    const user=auth.currentUser;
+    const trip=getActiveTrip();
+    if(!trip || trip.processed){ paymentDialog.close(); return; }
+    if(!user){
+      tripPaymentStatus.textContent='Connecte-toi à l’espace capitaine pour enregistrer la réponse.';
+      return;
+    }
+    const type=wasPaid ? 'payment' : 'remaining';
+    const date=localDateIso(new Date());
+    tripPaymentStatus.textContent='Enregistrement…';
+    try{
+      await addDoc(collection(db,'carnet_bord'),{
+        date, type, amount:100,
+        title:wasPaid ? 'Excursion payée' : 'Excursion non payée',
+        details:`Excursion commencée le ${new Date(trip.startedAt).toLocaleString('fr-FR')} · montant automatique de 100 €`,
+        excursionId:trip.id, source:'qr_registre', authorEmail:user.email, authorUid:user.uid, createdAt:serverTimestamp()
+      });
+      trip.processed=true; trip.paymentStatus=wasPaid?'paid':'unpaid'; trip.completedAt=Date.now(); saveActiveTrip(trip);
+      paymentDialog.close();
+      renderActiveTrip();
+      await loadLogbook();
+      alert(wasPaid ? '100 € ajoutés dans « Paiements reçus ».' : '100 € ajoutés dans « Reste à payer ».');
+    }catch(error){
+      console.error(error);
+      tripPaymentStatus.textContent='Impossible d’enregistrer. Vérifie la connexion et les règles Firebase.';
+    }
+  }
+  document.getElementById('tripPaidYes').addEventListener('click',()=>recordTripPayment(true));
+  document.getElementById('tripPaidNo').addEventListener('click',()=>recordTripPayment(false));
+  setInterval(()=>{ renderActiveTrip(); askTripPayment(false); },60000);
+  document.addEventListener('visibilitychange',()=>{ if(!document.hidden){ renderActiveTrip(); askTripPayment(false); } });
+  window.addEventListener('focus',()=>{ renderActiveTrip(); askTripPayment(false); });
+  renderActiveTrip();
+  setTimeout(()=>askTripPayment(false),800);
+
+  document.getElementById('shareBusiness').addEventListener('click', async ()=>{
+    const data = {
+      title: "L’Artiste – Excursions en bateau",
+      text: "Découvrez L’Artiste, excursions dans le Grand Cul-de-Sac Marin au départ de Sainte-Rose.",
+      url: "https://www.instagram.com/lartiste.boat"
+    };
+    try{
+      if(navigator.share){ await navigator.share(data); }
+      else{
+        await navigator.clipboard.writeText(data.url);
+        alert('Lien Instagram copié. Vous pouvez maintenant le partager.');
+      }
+    }catch(e){ if(e.name !== 'AbortError') alert('Le partage n’a pas pu être ouvert.'); }
+  });
+
 
 
   const defaultSettings = {
@@ -485,7 +756,8 @@
     colleagueEmail: "Gaceponchristiane@gmail.com",
     whatsapp: "https://wa.me/590690188810",
     instagram: "https://www.instagram.com/lartiste.boat?igsh=MXJ1a28xcTU3d3Z1dw==",
-    facebook: "https://www.facebook.com/share/1JV7fotTMj/",
+    facebook: "https://www.facebook.com/share/18yojth8gK/",
+    tripadvisor: "https://www.tripadvisor.com/UserReviewEdit-d34519311?m=68676",
     review: "https://g.page/r/CX5EuJUjGmYpEAE/review",
     weather: "https://meteofrance.gp/fr/marine/guadeloupe/cote/guadeloupe-grand-cul-de-sac"
   };
@@ -503,6 +775,7 @@
     document.getElementById('linkWhatsapp').href = settings.whatsapp;
     document.getElementById('linkInstagram').href = settings.instagram;
     document.getElementById('linkFacebook').href = settings.facebook;
+    document.getElementById('linkTripadvisor').href = settings.tripadvisor;
     document.getElementById('linkReview').href = settings.review;
     document.getElementById('linkWeather').href = settings.weather;
 
@@ -513,6 +786,7 @@
     document.getElementById('settingWhatsapp').value = settings.whatsapp;
     document.getElementById('settingInstagram').value = settings.instagram;
     document.getElementById('settingFacebook').value = settings.facebook;
+    document.getElementById('settingTripadvisor').value = settings.tripadvisor;
     document.getElementById('settingReview').value = settings.review;
     document.getElementById('settingWeather').value = settings.weather;
   }
@@ -526,6 +800,7 @@
       whatsapp: document.getElementById('settingWhatsapp').value.trim(),
       instagram: document.getElementById('settingInstagram').value.trim(),
       facebook: document.getElementById('settingFacebook').value.trim(),
+      tripadvisor: document.getElementById('settingTripadvisor').value.trim(),
       review: document.getElementById('settingReview').value.trim(),
       weather: document.getElementById('settingWeather').value.trim()
     };
@@ -588,8 +863,8 @@
     loginPanel.style.display = user ? 'none' : 'block';
     userBar.classList.toggle('visible', Boolean(user));
     connectedUser.textContent = user ? user.email : 'Non connecté';
-    if(user) loadGallery();
-    else gallery.innerHTML = '<div class="empty-state">Connecte-toi pour consulter les photos.</div>';
+    if(user){ loadGallery(); loadAvailability(); loadLogbook(); seedInitialLogbook(); }
+    else { document.getElementById('availabilityCalendar').innerHTML = '<div class="empty-state" style="grid-column:1/-1">Connecte-toi pour consulter le calendrier.</div>'; document.getElementById('logbookHistory').innerHTML = '<div class="empty-state">Connecte-toi pour consulter le carnet.</div>'; gallery.innerHTML = '<div class="empty-state">Connecte-toi pour consulter les photos.</div>'; }
   }
 
   document.getElementById('loginButton').addEventListener('click', async ()=>{
@@ -600,20 +875,8 @@
       await signInWithEmailAndPassword(auth, email, password);
       document.getElementById('loginPassword').value = '';
     }catch(error){
-      console.error('Erreur Firebase complète :', error);
-      const code = error?.code || '';
-      const messages = {
-        'auth/invalid-credential': 'Adresse e-mail ou mot de passe incorrect.',
-        'auth/invalid-login-credentials': 'Adresse e-mail ou mot de passe incorrect.',
-        'auth/user-not-found': 'Ce compte n’existe pas dans Firebase Authentication.',
-        'auth/wrong-password': 'Le mot de passe est incorrect.',
-        'auth/too-many-requests': 'Trop de tentatives. Attends quelques minutes avant de réessayer.',
-        'auth/network-request-failed': 'Problème de connexion Internet. Vérifie le Wi-Fi ou les données mobiles.',
-        'auth/operation-not-allowed': 'La connexion par e-mail et mot de passe n’est pas activée dans Firebase.',
-        'auth/unauthorized-domain': 'Ce domaine n’est pas autorisé dans Firebase Authentication.'
-      };
-      const detail = messages[code] || `Erreur Firebase : ${code || error.message || 'inconnue'}`;
-      alert(detail);
+      console.error(error);
+      alert('Connexion impossible. Vérifie l’adresse e-mail et le mot de passe.');
     }
   });
 
@@ -626,6 +889,200 @@
   function escapeHtml(value=''){
     return value.replace(/[&<>'"]/g, char=>({ '&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;' }[char]));
   }
+
+
+  const moneyFormatter = new Intl.NumberFormat('fr-FR', {style:'currency', currency:'EUR'});
+  const logbookHistory = document.getElementById('logbookHistory');
+  const logbookStatus = document.getElementById('logbookStatus');
+  document.getElementById('logDate').value = new Date().toISOString().slice(0,10);
+
+  const logTypeLabels = {
+    payment:'Paiement reçu', remaining:'Reste à payer', expense:'Dépense',
+    maintenance:'Entretien / réparation', operation:'Opération du bateau', note:'Note'
+  };
+
+
+  const availabilityLabels = {
+    available:'Disponible', unavailable:'Indisponible', morning:'Matin indisponible', afternoon:'Après-midi indisponible'
+  };
+  let calendarCursor = new Date();
+  calendarCursor.setDate(1);
+  let availabilityData = {};
+
+  function localDateKey(date){
+    const y=date.getFullYear(), m=String(date.getMonth()+1).padStart(2,'0'), d=String(date.getDate()).padStart(2,'0');
+    return `${y}-${m}-${d}`;
+  }
+
+  async function loadAvailability(){
+    if(!auth.currentUser) return;
+    document.getElementById('availabilityStatusText').textContent = 'Chargement du calendrier…';
+    try{
+      const snap = await getDocs(query(collection(db,'disponibilites'), limit(500)));
+      availabilityData = {};
+      snap.forEach(ds=>availabilityData[ds.id]={id:ds.id,...ds.data()});
+      renderAvailabilityCalendar();
+      document.getElementById('availabilityStatusText').textContent = 'Calendrier synchronisé avec Firebase.';
+    }catch(error){
+      console.error(error);
+      document.getElementById('availabilityStatusText').textContent = 'Impossible de charger le calendrier. Publie les nouvelles règles Firestore.';
+    }
+  }
+
+  function renderAvailabilityCalendar(){
+    const grid=document.getElementById('availabilityCalendar');
+    const title=document.getElementById('calendarMonthTitle');
+    title.textContent=calendarCursor.toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
+    grid.innerHTML='';
+    const first=new Date(calendarCursor.getFullYear(),calendarCursor.getMonth(),1);
+    const mondayIndex=(first.getDay()+6)%7;
+    const start=new Date(first); start.setDate(first.getDate()-mondayIndex);
+    const todayKey=localDateKey(new Date());
+    for(let i=0;i<42;i++){
+      const date=new Date(start); date.setDate(start.getDate()+i);
+      const key=localDateKey(date); const item=availabilityData[key];
+      const btn=document.createElement('button'); btn.type='button'; btn.className='calendar-day';
+      if(date.getMonth()!==calendarCursor.getMonth()) btn.classList.add('outside');
+      if(key===todayKey) btn.classList.add('today');
+      if(item?.status) btn.classList.add(item.status);
+      btn.innerHTML=`<span class="day-number">${date.getDate()}</span><span class="day-state">${item ? escapeHtml(availabilityLabels[item.status]||'') : ''}</span>`;
+      btn.title=item?.note ? `${availabilityLabels[item.status]} — ${item.note}` : (item ? availabilityLabels[item.status] : 'Aucun statut');
+      if(date.getMonth()===calendarCursor.getMonth()) btn.addEventListener('click',()=>selectAvailabilityDate(key));
+      grid.append(btn);
+    }
+  }
+
+  function selectAvailabilityDate(key){
+    const item=availabilityData[key];
+    document.getElementById('availabilityDate').value=key;
+    document.getElementById('availabilityStatus').value=item?.status||'available';
+    document.getElementById('availabilityNote').value=item?.note||'';
+  }
+
+  document.getElementById('previousMonth').addEventListener('click',()=>{calendarCursor.setMonth(calendarCursor.getMonth()-1);renderAvailabilityCalendar();});
+  document.getElementById('nextMonth').addEventListener('click',()=>{calendarCursor.setMonth(calendarCursor.getMonth()+1);renderAvailabilityCalendar();});
+  document.getElementById('availabilityDate').value=localDateKey(new Date());
+  document.getElementById('availabilityDate').addEventListener('change',e=>{
+    if(!e.target.value) return;
+    const d=new Date(e.target.value+'T12:00:00'); calendarCursor=new Date(d.getFullYear(),d.getMonth(),1); selectAvailabilityDate(e.target.value); renderAvailabilityCalendar();
+  });
+  document.getElementById('saveAvailability').addEventListener('click',async()=>{
+    const user=auth.currentUser; if(!user){alert('Connecte-toi d’abord.');return;}
+    const date=document.getElementById('availabilityDate').value;
+    const status=document.getElementById('availabilityStatus').value;
+    const note=document.getElementById('availabilityNote').value.trim();
+    if(!date){alert('Choisis une date.');return;}
+    const button=document.getElementById('saveAvailability'); button.disabled=true;
+    document.getElementById('availabilityStatusText').textContent='Enregistrement…';
+    try{
+      await setDoc(doc(db,'disponibilites',date),{date,status,note,authorUid:user.uid,authorEmail:user.email,updatedAt:serverTimestamp()});
+      availabilityData[date]={date,status,note}; renderAvailabilityCalendar();
+      document.getElementById('availabilityStatusText').textContent='Disponibilité enregistrée.';
+    }catch(error){console.error(error);document.getElementById('availabilityStatusText').textContent='Échec de l’enregistrement. Vérifie les règles Firestore.';}
+    finally{button.disabled=false;}
+  });
+  document.getElementById('deleteAvailability').addEventListener('click',async()=>{
+    const user=auth.currentUser; if(!user){alert('Connecte-toi d’abord.');return;}
+    const date=document.getElementById('availabilityDate').value; if(!date){alert('Choisis une date.');return;}
+    if(!availabilityData[date]){document.getElementById('availabilityStatusText').textContent='Aucun statut enregistré pour cette date.';return;}
+    if(!confirm('Effacer le statut de disponibilité de cette date ?')) return;
+    try{
+      await deleteDoc(doc(db,'disponibilites',date)); delete availabilityData[date]; renderAvailabilityCalendar();
+      document.getElementById('availabilityNote').value=''; document.getElementById('availabilityStatusText').textContent='Statut effacé.';
+    }catch(error){console.error(error);document.getElementById('availabilityStatusText').textContent='Suppression impossible.';}
+  });
+
+  async function seedInitialLogbook(){
+    if(!auth.currentUser || localStorage.getItem('initialLogbookSeedV1') === 'done') return;
+    try{
+      const snap = await getDocs(query(collection(db, 'carnet_bord'), limit(1)));
+      if(snap.empty){
+        const initialEntries = [
+          {date:'2026-07-21', type:'payment', amount:100, title:'Paiement reçu', details:'Paiement enregistré le 21 juillet 2026'},
+          {date:'2026-07-23', type:'payment', amount:200, title:'Paiement reçu', details:'Paiement enregistré le 23 juillet 2026'},
+          {date:'2026-07-23', type:'remaining', amount:270, title:'Reste à payer', details:'Solde restant à encaisser'}
+        ];
+        for(const entry of initialEntries){
+          await addDoc(collection(db, 'carnet_bord'), {...entry, authorEmail:auth.currentUser.email, authorUid:auth.currentUser.uid, createdAt:serverTimestamp()});
+        }
+      }
+      localStorage.setItem('initialLogbookSeedV1','done');
+      await loadLogbook();
+    }catch(error){ console.error('Initialisation carnet', error); }
+  }
+
+  async function loadLogbook(){
+    logbookHistory.innerHTML = '<div class="empty-state">Chargement du carnet…</div>';
+    try{
+      const q = query(collection(db, 'carnet_bord'), orderBy('date','desc'), limit(100));
+      const snap = await getDocs(q);
+      let payments = 0, remaining = 0;
+      const entries = [];
+      snap.forEach(docSnap=>{
+        const item = docSnap.data();
+        entries.push({id:docSnap.id, ...item});
+        if(item.type === 'payment') payments += Number(item.amount || 0);
+        if(item.type === 'remaining') remaining += Number(item.amount || 0);
+      });
+      document.getElementById('paymentsTotal').textContent = moneyFormatter.format(payments);
+      document.getElementById('remainingTotal').textContent = moneyFormatter.format(remaining);
+      document.getElementById('grandTotal').textContent = moneyFormatter.format(payments + remaining);
+      if(!entries.length){ logbookHistory.innerHTML = '<div class="empty-state">Aucune entrée pour le moment.</div>'; return; }
+      logbookHistory.innerHTML = '';
+      entries.forEach(item=>{
+        const article = document.createElement('article');
+        article.className = 'logbook-entry' + (item.type === 'remaining' ? ' remaining' : '');
+        const displayDate = item.date ? new Date(item.date+'T12:00:00').toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'}) : 'Date non indiquée';
+        const amount = Number(item.amount || 0);
+        article.innerHTML = `<div><b>${escapeHtml(item.title || logTypeLabels[item.type] || 'Entrée')}</b><div>${escapeHtml(logTypeLabels[item.type] || item.type || 'Note')} · ${escapeHtml(displayDate)}</div>${item.details ? `<div class="media-meta" style="margin-top:5px">${escapeHtml(item.details)}</div>` : ''}</div><div class="amount">${amount ? escapeHtml(moneyFormatter.format(amount)) : '—'}<button class="delete-log-entry" type="button" data-id="${escapeHtml(item.id)}" style="display:block;margin-top:8px;background:#ffe9e9;color:#a51f1f;padding:7px 9px;font-size:12px">Supprimer</button></div>`;
+        logbookHistory.append(article);
+      });
+      logbookHistory.querySelectorAll('.delete-log-entry').forEach(button=>{
+        button.addEventListener('click', async ()=>{
+          if(!auth.currentUser){ alert('Connecte-toi d’abord.'); return; }
+          if(!confirm('Supprimer définitivement cette entrée ? Les totaux seront recalculés.')) return;
+          button.disabled=true;
+          try{
+            await deleteDoc(doc(db,'carnet_bord',button.dataset.id));
+            await loadLogbook();
+          }catch(error){
+            console.error(error);
+            button.disabled=false;
+            alert('Suppression impossible. Vérifie que les nouvelles règles Firestore sont publiées.');
+          }
+        });
+      });
+      logbookStatus.textContent = 'Carnet synchronisé avec Firebase.';
+    }catch(error){
+      console.error(error);
+      logbookHistory.innerHTML = '<div class="empty-state">Impossible de charger le carnet. Publie les nouvelles règles Firestore.</div>';
+      logbookStatus.textContent = '';
+    }
+  }
+
+  document.getElementById('refreshLogbook').addEventListener('click', loadLogbook);
+  document.getElementById('addLogEntry').addEventListener('click', async ()=>{
+    const user = auth.currentUser;
+    if(!user){ alert('Connecte-toi d’abord.'); return; }
+    const date = document.getElementById('logDate').value;
+    const type = document.getElementById('logType').value;
+    const amount = Number(document.getElementById('logAmount').value || 0);
+    const title = document.getElementById('logTitle').value.trim() || logTypeLabels[type];
+    const details = document.getElementById('logDetails').value.trim();
+    if(!date){ alert('Indique une date.'); return; }
+    if(['payment','remaining','expense'].includes(type) && amount <= 0){ alert('Indique un montant supérieur à 0.'); return; }
+    const button = document.getElementById('addLogEntry');
+    button.disabled = true; logbookStatus.textContent = 'Enregistrement…';
+    try{
+      await addDoc(collection(db, 'carnet_bord'), {date,type,amount,title,details,authorEmail:user.email,authorUid:user.uid,createdAt:serverTimestamp()});
+      document.getElementById('logAmount').value = '';
+      document.getElementById('logTitle').value = '';
+      document.getElementById('logDetails').value = '';
+      logbookStatus.textContent = 'Entrée ajoutée avec succès.';
+      await loadLogbook();
+    }catch(error){ console.error(error); logbookStatus.textContent = 'Échec de l’enregistrement. Vérifie les règles Firestore.'; }
+    finally{ button.disabled = false; }
+  });
 
   async function loadGallery(){
     gallery.innerHTML = '<div class="empty-state">Chargement…</div>';

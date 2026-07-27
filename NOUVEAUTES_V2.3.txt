@@ -1,0 +1,10 @@
+COCKPIT L'ARTISTE v2.3 — SUIVI AUTOMATIQUE DES EXCURSIONS
+
+- Appuyer sur « QR registre » démarre automatiquement une excursion de 4 heures.
+- À la fin, l'application demande : « As-tu été payé 100 € ? »
+- Oui : 100 € sont ajoutés à « Paiements reçus » avec la date.
+- Non : 100 € sont ajoutés à « Reste à payer » avec la date.
+- Si l'application est fermée, la question apparaît à sa prochaine ouverture après l'heure prévue.
+- Le bouton « Terminer l’excursion maintenant » permet de répondre avant les 4 heures.
+
+Important : un site web ne peut pas détecter directement qu’un passager a scanné une image QR statique. Le démarrage est donc déclenché quand le capitaine appuie sur le bouton « QR registre » pour afficher le QR code.
