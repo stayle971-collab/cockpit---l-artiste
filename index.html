@@ -876,7 +876,7 @@
       document.getElementById('loginPassword').value = '';
     }catch(error){
       console.error(error);
-      alert('Connexion impossible. Vérifie l’adresse e-mail et le mot de passe.');
+      alert('');alert('Erreur Firebase : ' + error.code + '\n' + error.message);
     }
   });
 
