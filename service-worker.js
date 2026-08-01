@@ -1,4 +1,4 @@
-const CACHE='lartiste-v3-1-architecture';
+const CACHE='lartiste-v3-3-1-fix-login';
 const ASSETS=['./','./index.html','./css/style.css','./js/app.js','./manifest.webmanifest','./icon.svg','./documents/permis_armement_lartiste.pdf','./assets/qr_registre_passagers.png','./assets/qr_avis_google.png','./assets/qr_avis_tripadvisor.png','./assets/bateau_lartiste.png','./assets/logo_alizes_evasion.png','./assets/signature_lartiste.jpg'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)))});
 self.addEventListener('activate',e=>e.waitUntil(Promise.all([

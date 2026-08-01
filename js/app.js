@@ -325,14 +325,19 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebas
   document.getElementById('loginButton').addEventListener('click', async ()=>{
     const email = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value;
-    if(!email || !password){ alert('Indique ton adresse e-mail et ton mot de passe.'); return; }
+    const status = document.getElementById('loginStatus');
+    const button = document.getElementById('loginButton');
+    if(!email || !password){ status.textContent='Indique ton adresse e-mail et ton mot de passe.'; return; }
+    button.disabled=true; status.textContent='Connexion en cours…';
     try{
       await signInWithEmailAndPassword(auth, email, password);
       document.getElementById('loginPassword').value = '';
+      status.textContent='Connexion réussie. Vérification des autorisations…';
     }catch(error){
       console.error(error);
-      alert('');alert('Erreur Firebase : ' + error.code + '\n' + error.message);
-    }
+      status.textContent='Connexion impossible : ' + (error.code || error.message);
+      alert('Erreur Firebase : ' + (error.code || 'inconnue') + '\n' + (error.message || ''));
+    }finally{ button.disabled=false; }
   });
 
   document.getElementById('loginPassword').addEventListener('keydown', e=>{
@@ -704,21 +709,3 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebas
   document.addEventListener('contextmenu',e=>{if(controlDialog.open)e.preventDefault()});
   document.addEventListener('keydown',e=>{if(controlDialog.open&&(e.key==='PrintScreen'||(e.ctrlKey&&['s','p','u'].includes(e.key.toLowerCase())))){e.preventDefault();alert('Action désactivée en Mode Contrôle. Les captures système ne peuvent pas être bloquées totalement sur le Web.')}});
   setGauge(43);
-    alert(type==='before' ? 'Niveau avant sortie enregistré.' : 'Niveau après sortie enregistré et consommation calculée.');
-  });
-
-  document.getElementById('saveEngineHours').addEventListener('click',()=>{
-    if(!auth.currentUser || !isAdmin()){alert('Les heures moteur sont réservées à l’administrateur.');return;}
-    const value=Number(document.getElementById('engineHours').value);
-    if(!Number.isFinite(value) || value<0){alert('Indique un nombre d’heures moteur valide.');return;}
-    localStorage.setItem(ENGINE_STORAGE_KEY,String(value));renderFuelModule();alert('Heures moteur enregistrées.');
-  });
-
-  document.getElementById('confirmFullTank').addEventListener('click',()=>{
-    if(!auth.currentUser || !isAdmin()){alert('Action réservée à l’administrateur.');return;}
-    if(!confirm('Confirmer que le plein a été effectué et remettre la jauge à 86 litres ?')) return;
-    const readings=getFuelReadings();
-    readings.push({id:Date.now(),type:'full',date:new Date().toISOString(),litres:FUEL_CAPACITY,note:'Plein validé par l’administrateur',author:auth.currentUser.email});
-    saveFuelReadings(readings);setGauge(FUEL_CAPACITY);renderFuelModule();
-  });
-  renderFuelModule();
