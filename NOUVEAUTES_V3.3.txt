@@ -1,0 +1,16 @@
+COCKPIT L’ARTISTE v3.3 — VERSION COMPLÉTÉE
+
+- Compte second capitaine créé depuis le panneau administrateur (email + mot de passe provisoire).
+- Rôles admin, second capitaine et lecture seule.
+- Carnet personnel séparé pour chaque capitaine.
+- Carnet financier privé réservé à l’administrateur.
+- Mode Contrôle accessible à l’équipage avec documents autorisés uniquement, avertissement confidentiel et filigrane.
+- BACPN/document personnel possible avec ownerUid et visibilité équipage.
+- Jauge 86 L synchronisée dans Firestore.
+- Relevés avant/après, consommation et L/h lorsque des heures moteur sont disponibles.
+- Alertes carburant faibles visibles à l’administrateur.
+- Heures moteur modifiables uniquement par l’administrateur.
+- Checklist avant/après synchronisable.
+- Règles Firestore et Storage mises à jour.
+
+IMPORTANT : publier firestore.rules et storage.rules dans Firebase avant utilisation. Les captures d’écran système ne peuvent pas être bloquées à 100 % dans une application web ; le mode contrôle ajoute les protections possibles côté navigateur.

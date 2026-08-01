@@ -1,0 +1,16 @@
+COCKPIT L'ARTISTE V3.1 — ARCHITECTURE
+
+Cette version conserve l'interface et les fonctions existantes.
+
+Nouveaux dossiers :
+- css/style.css : présentation visuelle
+- js/app.js : logique Firebase et application
+
+Rôles reconnus :
+- admin : Administrateur
+- captain : Second capitaine
+- reader : Lecture seule
+
+Important :
+- Continuer les essais avec Live Server avant toute publication.
+- Ne pas remplacer la version en ligne avant validation complète.

@@ -1,0 +1,29 @@
+COCKPIT L’ARTISTE V3 — INSTALLATION DE TEST
+
+IMPORTANT : ne remplace pas encore la version en ligne.
+
+1. Firebase Authentication > Utilisateurs
+   - relève l’UID de ton compte principal.
+   - crée ensuite ton compte test et relève son UID.
+
+2. Firestore Database > Données
+   Crée la collection users.
+   Crée un document ayant exactement comme identifiant l’UID de ton compte principal :
+      role (chaîne) = admin
+      email (chaîne) = ton adresse principale
+   Crée un second document avec l’UID du compte test :
+      role (chaîne) = reader
+      email (chaîne) = ta deuxième adresse
+
+3. Firestore Database > Règles
+   Copie tout le contenu de firestore.rules puis publie.
+
+4. Firebase Storage > Règles
+   Active Storage si nécessaire, copie tout le contenu de storage.rules puis publie.
+
+5. Déploie cette V3 uniquement sur une branche ou un dépôt de test.
+
+TESTS À EFFECTUER
+- Les QR registre, Google et TripAdvisor s’ouvrent.
+- Admin : calendrier modifiable, carnet visible, documents ajoutables.
+- Lecteur : calendrier visible mais non modifiable, carnet et paiements invisibles, documents « Équipage » visibles, documents « Moi uniquement » invisibles.

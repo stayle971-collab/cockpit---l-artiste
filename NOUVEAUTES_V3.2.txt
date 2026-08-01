@@ -1,0 +1,12 @@
+COCKPIT L'ARTISTE — VERSION 3.2
+
+- Jauge analogique animée calibrée pour un réservoir de 86 litres.
+- Relevé carburant avant et après chaque sortie.
+- Calcul automatique de la dernière consommation.
+- Alertes visuelles : normal, prévoir le plein, faire le plein.
+- Historique des 12 derniers relevés.
+- Heures moteur modifiables uniquement par l'administrateur.
+- Bouton administrateur « Plein effectué » pour remettre la jauge à 86 L.
+- Le second capitaine peut saisir les niveaux avant/après mais ne peut pas modifier les heures moteur.
+
+Important : les relevés de ce module sont enregistrés localement sur l'appareil utilisé.

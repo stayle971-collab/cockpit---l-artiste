@@ -1,0 +1,12 @@
+rules_version = '2';
+service firebase.storage {
+ match /b/{bucket}/o {
+  function signedIn(){return request.auth!=null;}
+  function role(){return firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role;}
+  function admin(){return signedIn() && role()=='admin';}
+  function captain(){return signedIn() && role()=='captain';}
+  function crew(){return signedIn() && (role()=='admin'||role()=='captain'||role()=='reader');}
+  match /documents/{allPaths=**}{allow read: if crew(); allow write: if admin()||captain();}
+  match /photos_bord/{allPaths=**}{allow read: if crew(); allow write: if admin()||captain();}
+ }
+}

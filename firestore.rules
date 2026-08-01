@@ -1,16 +1,21 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /photos_bord/{document} {
-      allow read, create: if request.auth != null;
-      allow update, delete: if false;
-    }
-    match /disponibilites/{document} {
-      allow read, create, update, delete: if request.auth != null;
-    }
-    match /carnet_bord/{document} {
-      allow read, create: if request.auth != null;
-      allow update, delete: if request.auth != null;
-    }
+    function signedIn(){ return request.auth != null; }
+    function profile(){ return get(/databases/$(database)/documents/users/$(request.auth.uid)).data; }
+    function role(){ return signedIn() ? profile().role : null; }
+    function admin(){ return role() == 'admin'; }
+    function captain(){ return role() == 'captain'; }
+    function reader(){ return role() == 'reader'; }
+    function crew(){ return admin() || captain() || reader(); }
+    match /users/{uid}{ allow read: if signedIn() && (request.auth.uid==uid || admin()); allow create,update,delete: if admin(); }
+    match /photos_bord/{id}{ allow read: if crew(); allow create: if admin() || captain(); allow update,delete: if admin(); }
+    match /disponibilites/{id}{ allow read: if crew(); allow write: if admin(); }
+    match /carnet_bord/{id}{ allow read,write: if admin(); }
+    match /captain_logs/{id}{ allow create: if (admin() || captain()) && request.resource.data.ownerUid==request.auth.uid; allow read,update,delete: if admin() || ((captain() || reader()) && resource.data.ownerUid==request.auth.uid); }
+    match /documents/{id}{ allow read: if admin() || (crew() && resource.data.visibility=='crew' && (resource.data.sharedWithCrew==true || !('ownerUid' in resource.data) || resource.data.ownerUid==request.auth.uid)); allow create: if admin() || (captain() && request.resource.data.ownerUid==request.auth.uid && request.resource.data.visibility=='crew'); allow update,delete: if admin() || (captain() && resource.data.ownerUid==request.auth.uid); }
+    match /fuel_readings/{id}{ allow read: if crew(); allow create: if admin() || captain(); allow update,delete: if admin(); }
+    match /engine_state/{id}{ allow read: if crew(); allow write: if admin(); }
+    match /checklists/{id}{ allow create: if (admin() || captain()) && request.resource.data.ownerUid==request.auth.uid; allow read: if admin() || resource.data.ownerUid==request.auth.uid; allow update,delete: if admin() || resource.data.ownerUid==request.auth.uid; }
   }
 }
